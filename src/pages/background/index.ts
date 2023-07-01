@@ -9,7 +9,16 @@ reloadOnUpdate("pages/background");
 reloadOnUpdate("pages/content/style.scss");
 
 import { initFirebase } from "./firebase";
+import { Firestore, collection, doc, setDoc } from "firebase/firestore";
+import { FIRESTORE_COLLECTION } from "@src/shared/constants";
 
 console.log("Background loaded");
 
-initFirebase();
+/* Begin  */
+
+const db = initFirebase() as Firestore;
+
+const cardsCollection = collection(db, FIRESTORE_COLLECTION.CARD);
+
+// const cardsDocRef = doc(cardsCollection);
+// setDoc(cardsDocRef, { text: "test" });
