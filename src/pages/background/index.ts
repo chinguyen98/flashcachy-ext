@@ -8,4 +8,8 @@ reloadOnUpdate("pages/background");
  */
 reloadOnUpdate("pages/content/style.scss");
 
-console.log("background loaded");
+import { initFirebase } from "./firebase";
+
+console.log("Background loaded");
+
+initFirebase();
