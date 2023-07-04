@@ -1,3 +1,4 @@
+import { CARD_DOC } from "@src/shared/types";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -16,7 +17,15 @@ const AddNewScreen: React.FC = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log({ data });
+    const time = new Date().getTime();
+    const dataDoc: CARD_DOC = {
+      front: data.front,
+      back: data.back,
+      created_at: time,
+      updated_at: time,
+      username: "coliamai",
+    };
+    console.log({ dataDoc });
   };
 
   return (
