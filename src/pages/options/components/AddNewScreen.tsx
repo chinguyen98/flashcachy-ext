@@ -1,4 +1,4 @@
-import { CARD_DOC } from "@src/shared/types";
+import { CARD_DOC, RES_DATA } from "@src/shared/types";
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -14,6 +14,7 @@ const AddNewScreen: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -25,7 +26,15 @@ const AddNewScreen: React.FC = () => {
       updated_at: time,
       username: "coliamai",
     };
-    console.log({ dataDoc });
+
+    chrome.runtime.sendMessage(dataDoc, (response) => {
+      if ((response as RES_DATA).errorCode === 0) {
+        alert("Add OK!");
+        reset();
+      } else {
+        alert((response as RES_DATA).message);
+      }
+    });
   };
 
   return (
