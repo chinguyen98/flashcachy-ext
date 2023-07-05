@@ -1,7 +1,5 @@
-import AddNewScreen from "./components/AddNewScreen";
-
 const Options = () => {
-  return <AddNewScreen />;
+  return <></>;
 };
 
 export default Options;

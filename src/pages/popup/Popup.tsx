@@ -1,5 +1,5 @@
 import "@pages/popup/Popup.css";
-import { CARD_DOC, RES_DATA } from "@src/shared/types";
+import { CARD_DOC, MSG_DTO } from "@src/shared/types";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -18,7 +18,7 @@ const Popup: React.FC = () => {
     reset,
   } = useForm<IFormInput>();
 
-  const [message, setMessage] = useState<{
+  const [alertMsg, setAlertMsg] = useState<{
     text: string;
     isError: boolean;
   } | null>(null);
@@ -33,12 +33,14 @@ const Popup: React.FC = () => {
       username: "coliamai",
     };
 
-    chrome.runtime.sendMessage(dataDoc, (response) => {
-      if ((response as RES_DATA).errorCode === 0) {
-        setMessage({ text: "Add successfully!", isError: false });
+    const message: MSG_DTO = { data: dataDoc, type: "addCard" };
+
+    chrome.runtime.sendMessage(message, (response) => {
+      if ((response as MSG_DTO).errorCode === 0) {
+        setAlertMsg({ text: "Add successfully!", isError: false });
         reset();
       } else {
-        setMessage({ text: (response as RES_DATA).message, isError: true });
+        setAlertMsg({ text: (response as MSG_DTO).data, isError: true });
       }
     });
   };
@@ -55,11 +57,13 @@ const Popup: React.FC = () => {
               <div className="w-full flex justify-center text-[#00FF00] text-xl mb:2 md:mb-5">
                 Flashcachy
               </div>
-              {message && !message?.isError && (
-                <div className="text-green-300 text-center">{message.text}</div>
+              {alertMsg && !alertMsg?.isError && (
+                <div className="text-green-300 text-center">
+                  {alertMsg.text}
+                </div>
               )}
-              {message && message?.isError && (
-                <div className="text-red-300 text-center">{message.text}</div>
+              {alertMsg && alertMsg?.isError && (
+                <div className="text-red-300 text-center">{alertMsg.text}</div>
               )}
               <div className="mb-6">
                 <label

@@ -7,7 +7,8 @@ export type CARD_DOC = {
   updated_at: number;
 };
 
-export type RES_DATA = {
-  errorCode: 1 | 0;
-  message?: string;
+export type MSG_DTO = {
+  type: "addCard" | "getAllCard";
+  data?: any;
+  errorCode?: 1 | 0;
 };
