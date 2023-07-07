@@ -19,6 +19,7 @@ const Options = () => {
     chrome.runtime.sendMessage(getAllCardMessage, (response: MSG_DTO) => {
       if (response) {
         if (response.errorCode === 0 && response.type === "getAllCard") {
+          console.log("cards", response.data);
           setCards(response.data);
         }
       }

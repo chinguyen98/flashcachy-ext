@@ -31,6 +31,7 @@ const Popup: React.FC = () => {
       created_at: time,
       updated_at: time,
       username: "coliamai",
+      searchs: [...data.front.split(/\s+/g), ...data.back.split(/\s+/g)],
     };
 
     const message: MSG_DTO = { data: dataDoc, type: "addCard" };

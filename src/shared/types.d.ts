@@ -6,6 +6,7 @@ export type CARD_DOC = {
   back: string;
   created_at: number;
   updated_at: number;
+  searchs?: string[];
 };
 
 export type MSG_DTO = {
