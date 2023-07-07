@@ -21,21 +21,11 @@ import { initFirebase } from "./firebase";
 
 console.log("Background loaded");
 
-/* Begin  */
+/* Begin background script  */
 
 const db = initFirebase() as Firestore;
 
 const cardsCollection = collection(db, FIRESTORE_COLLECTION.CARD);
-
-// (async () => {
-//   const querySnapshot = await getDocs(
-//     collection(db, FIRESTORE_COLLECTION.CARD)
-//   );
-//   querySnapshot.forEach((doc) => {
-//     // doc.data() is never undefined for query doc snapshots
-//     console.log(doc.id, " => ", doc.data());
-//   });
-// })();
 
 chrome.runtime.onMessage.addListener((message: MSG_DTO, _, sendResponse) => {
   try {
