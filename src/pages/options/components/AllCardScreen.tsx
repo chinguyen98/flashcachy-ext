@@ -1,4 +1,5 @@
 import { CARD_DOC } from "@src/shared/types";
+import { useRef } from "react";
 
 const AllCardScreen = ({
   cards,
@@ -7,16 +8,39 @@ const AllCardScreen = ({
   cards: CARD_DOC[];
   handleClickCard: (card: CARD_DOC) => void;
 }) => {
+  const timeRef = useRef<ReturnType<null | typeof setTimeout>>();
+
+  const handleChange = (val: string) => {
+    if (timeRef.current) {
+      clearTimeout(timeRef.current);
+    }
+
+    timeRef.current = setTimeout(() => {
+      console.log(val);
+    }, 300);
+  };
+
   return (
     <>
       <div
-        style={{ height: "50px" }}
-        className="flex justify-center items-center w-full text-2xl text-white"
+        style={{ height: "100px" }}
+        className="flex justify-center flex-col items-center w-full text-2xl text-white"
       >
-        Flashcachy All Cards
+        <div>Flashcachy All Cards</div>
+        <div>
+          <input
+            onChange={(e) => {
+              handleChange(e.target.value);
+            }}
+            type="text"
+            className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 md:p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search"
+            // {...register("username", { required: true })}
+          />
+        </div>
       </div>
       <div
-        style={{ height: "calc(100vh - 50px)" }}
+        style={{ height: "calc(100vh - 100px)" }}
         className="w-full p-1 grid grid-cols-8 gap-4 overflow-auto"
       >
         {cards.map((card) => {
