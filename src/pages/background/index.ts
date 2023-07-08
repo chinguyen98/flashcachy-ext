@@ -15,7 +15,9 @@ import {
   collection,
   doc,
   getDocs,
+  query,
   setDoc,
+  where,
 } from "firebase/firestore";
 import { initFirebase } from "./firebase";
 
@@ -36,16 +38,27 @@ chrome.runtime.onMessage.addListener((message: MSG_DTO, _, sendResponse) => {
       const resData: MSG_DTO = { errorCode: 0, type: "addCard" };
       sendResponse(resData);
     } else if (message.type === "getAllCard") {
-      getDocs(collection(db, FIRESTORE_COLLECTION.CARD)).then(
-        (querySnapshot) => {
-          const data = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          const resData: MSG_DTO = { type: "getAllCard", data, errorCode: 0 };
-          sendResponse(resData);
-        }
+      getDocs(cardsCollection).then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        const resData: MSG_DTO = { type: "getAllCard", data, errorCode: 0 };
+        sendResponse(resData);
+      });
+    } else if (message.type === "findCard") {
+      const q = query(
+        cardsCollection,
+        where("searchs", "array-contains-any", [message.data])
       );
+      getDocs(q).then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        const resData: MSG_DTO = { type: "findCard", data, errorCode: 0 };
+        sendResponse(resData);
+      });
     }
   } catch (err) {
     const resData: MSG_DTO = { errorCode: 1, data: err, type: "addCard" };

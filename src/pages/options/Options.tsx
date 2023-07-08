@@ -26,6 +26,13 @@ const Options = () => {
     });
   };
 
+  const findCardByStr = (text: string) => {
+    const message: MSG_DTO = { type: "findCard", data: text };
+    chrome.runtime.sendMessage(message, (response: MSG_DTO) => {
+      console.log(response.data);
+    });
+  };
+
   return (
     <div className="h-screen bg-slate-500 w-full">
       {card ? (
@@ -37,6 +44,7 @@ const Options = () => {
         />
       ) : (
         <AllCardScreen
+          findCardByStr={findCardByStr}
           cards={cards}
           handleClickCard={(card) => {
             setCard(card);

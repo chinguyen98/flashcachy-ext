@@ -4,9 +4,11 @@ import { useRef } from "react";
 const AllCardScreen = ({
   cards,
   handleClickCard,
+  findCardByStr,
 }: {
   cards: CARD_DOC[];
   handleClickCard: (card: CARD_DOC) => void;
+  findCardByStr: (text: string) => void;
 }) => {
   const timeRef = useRef<ReturnType<null | typeof setTimeout>>();
 
@@ -16,7 +18,7 @@ const AllCardScreen = ({
     }
 
     timeRef.current = setTimeout(() => {
-      console.log(val);
+      findCardByStr(val);
     }, 300);
   };
 
