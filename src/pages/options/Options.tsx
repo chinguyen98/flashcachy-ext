@@ -27,9 +27,14 @@ const Options = () => {
   };
 
   const findCardByStr = (text: string) => {
+    if (text.length === 0) {
+      getAllCards();
+      return;
+    }
+
     const message: MSG_DTO = { type: "findCard", data: text };
     chrome.runtime.sendMessage(message, (response: MSG_DTO) => {
-      console.log(response.data);
+      setCards(response.data);
     });
   };
 
