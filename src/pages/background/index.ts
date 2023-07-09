@@ -18,6 +18,7 @@ import {
   orderBy,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { initFirebase } from "./firebase";
@@ -39,6 +40,12 @@ chrome.runtime.onMessage.addListener((message: MSG_DTO, _, sendResponse) => {
 
       const resData: MSG_DTO = { errorCode: 0, type: "addCard" };
       sendResponse(resData);
+    } else if (message.type === "editCard") {
+      const cardDocRef = doc(db, FIRESTORE_COLLECTION.CARD, message.data?.id);
+      updateDoc(cardDocRef, message.data).then(() => {
+        const resData: MSG_DTO = { errorCode: 0, type: "editCard" };
+        sendResponse(resData);
+      });
     } else if (message.type === "getAllCard") {
       const q = query(cardsCollection, orderBy("created_at", "desc"));
       getDocs(q).then((querySnapshot) => {

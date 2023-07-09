@@ -10,7 +10,7 @@ export type CARD_DOC = {
 };
 
 export type MSG_DTO = {
-  type: "addCard" | "getAllCard" | "findCard" | null;
+  type: "addCard" | "getAllCard" | "findCard" | "editCard" | null;
   data?: any;
   errorCode?: 1 | 0;
 };

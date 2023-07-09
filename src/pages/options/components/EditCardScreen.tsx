@@ -1,4 +1,4 @@
-import { CARD_DOC } from "@src/shared/types";
+import { CARD_DOC, MSG_DTO } from "@src/shared/types";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -29,9 +29,34 @@ const EditCardScreen = ({
     text: string;
     isError: boolean;
   } | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log({ data });
+    setIsLoading(true);
+    try {
+      const updated_at = new Date().getTime();
+
+      const updatedCard: CARD_DOC = {
+        ...card,
+        updated_at,
+        front: data.front,
+        back: data.back,
+        imgUrl: data.imgUrl,
+        searchs: [...data.front.split(/\s+/g), ...data.back.split(/\s+/g)],
+      };
+
+      const message: MSG_DTO = { data: updatedCard, type: "editCard" };
+
+      chrome.runtime.sendMessage(message, (response) => {
+        if ((response as MSG_DTO).errorCode === 0) {
+          setAlertMsg({ text: "Edit successfully!", isError: false });
+        } else {
+          setAlertMsg({ text: (response as MSG_DTO).data, isError: true });
+        }
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -122,6 +147,7 @@ const EditCardScreen = ({
                 )} */}
             </div>
             <button
+              disabled={isLoading}
               type="submit"
               className="mt-4 md:mt-10 w-full flex justify-center text-sm md:text-xl bg-[#00FF00] py-2 rounded-md"
             >
